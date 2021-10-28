@@ -1,48 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 export default function FileUploadPage() {
-	const [selectedFile, setSelectedFile] = useState({});
+	const [selectedFile, setSelectedFile] = useState(null);
 	const [overSize, setOverSize] = useState(false);
 	const [res, setResult] = useState(null);
 	const [loading, setloading] = useState(false);
 
 	const changeHandler = (event) => {
 		event.preventDefault();
-		console.log('onchnage');
-		setSelectedFile(event.target.files[0]);
-		console.log(event.target.files[0]);
 		if (event.target.files[0].size > 5000000) {
 			setOverSize(true);
 		} else {
+			setSelectedFile(event.target.files[0]);
 			setOverSize(false);
-			handleSubmission();
 		}
 	};
 
-	const handleSubmission = () => {
-		setloading(true);
-		const formData = new FormData();
+	useEffect(() => {
+		if (selectedFile) {
+			setloading(true);
+			const formData = new FormData();
 
-		formData.append('file', selectedFile);
-		formData.append(
-			'expires',
-			new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString()
-		);
+			formData.append('file', selectedFile);
+			formData.append(
+				'expires',
+				new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString()
+			);
 
-		fetch(`https://file.io/`, {
-			method: 'POST',
-			body: formData,
-		})
-			.then((response) => response.json())
-			.then((result) => {
-				console.log('Success:');
-				setloading(false);
-				setResult(result);
+			fetch(`https://file.io/`, {
+				method: 'POST',
+				body: formData,
 			})
-			.catch((error) => {
-				setloading(false);
-				console.error('Error:', error);
-			});
-	};
+				.then((response) => response.json())
+				.then((result) => {
+					setloading(false);
+					if (result.success) setResult(result);
+					else throw new Error(result.message);
+				})
+				.catch((error) => {
+					setloading(false);
+					console.error('Error:', error);
+				});
+		}
+	}, [selectedFile]);
 
 	return (
 		<div className="container main-div">
