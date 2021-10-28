@@ -27,7 +27,7 @@ export default function FileUploadPage() {
 			new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString()
 		);
 
-		fetch(`https://file.io/?key=${process.env.REACT_APP_KEY}`, {
+		fetch(`https://file.io/`, {
 			method: 'POST',
 			body: formData,
 		})
