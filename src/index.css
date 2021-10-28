@@ -28,6 +28,12 @@ form {
 	justify-content: center;
 }
 
+@media only screen and (max-width: 600px) {
+	.main-div {
+		margin-top: 100px;
+	}
+}
+
 .form-container {
 	width: 100%;
 	display: flex;
