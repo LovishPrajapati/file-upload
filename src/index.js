@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import FileUploadPage from './FileUploadPage';
+import { App } from './App';
 
 ReactDOM.render(
 	<React.StrictMode>
-		<FileUploadPage />
+		<App />
 	</React.StrictMode>,
 	document.getElementById('root')
 );
